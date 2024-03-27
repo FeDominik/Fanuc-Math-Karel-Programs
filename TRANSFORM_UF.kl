@@ -1,0 +1,33 @@
+PROGRAM TRANSFORM_UF
+%COMMENT = 'iID oID iUF oUF'
+
+VAR
+	inputPRID : INTEGER
+	outputPRID : INTEGER
+	oldFrameID : INTEGER
+	newFrameID : INTEGER
+	oldFrame : POSITION
+	newFrame : POSITION
+	worldPos : POSITION
+	oldPos : POSITION
+	newPos : XYZWPR
+	tempString : STRING[50]
+	tempFloat : REAL
+	status : INTEGER
+
+BEGIN
+	GET_TPE_PRM(1, 1, inputPRID, tempFloat, tempString, status)
+	GET_TPE_PRM(2, 1, outputPRID, tempFloat, tempString, status)
+	GET_TPE_PRM(3, 1, oldFrameID, tempFloat, tempString, status)
+	GET_TPE_PRM(4, 1, newFrameID, tempFloat, tempString, status)
+	
+	oldPos = GET_POS_REG(inputPRID, status)
+	oldFrame = $MNUFRAME[1, oldFrameID]
+	newFrame = $MNUFRAME[1, newFrameID]
+	
+	worldPos = oldFrame : oldPos
+	newPos = INV(newFrame) : worldPos
+	
+	SET_POS_REG(outputPRID,newPos,status)
+	
+END TRANSFORM_UF

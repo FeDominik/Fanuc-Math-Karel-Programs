@@ -1,0 +1,26 @@
+PROGRAM UFRAME_OFFSET_PR
+
+VAR
+	inputPRID : INTEGER
+	outputPRID : INTEGER
+	frameID : INTEGER
+	offset : POSITION
+	framePos : POSITION
+	newPos : XYZWPR
+	tempString : STRING[50]
+	tempFloat : REAL
+	status : INTEGER
+
+BEGIN
+	GET_TPE_PRM(1, 1, inputPRID, tempFloat, tempString, status)
+	GET_TPE_PRM(2, 1, outputPRID, tempFloat, tempString, status)
+	GET_TPE_PRM(3, 1, frameID, tempFloat, tempString, status)
+
+	offset = GET_POS_REG(inputPRID, status)
+	framePos = $MNUFRAME[1, frameID]
+	
+	newPos = framePos : offset
+	
+	SET_POS_REG(outputPRID,newPos,status)
+	
+END UFRAME_OFFSET_PR

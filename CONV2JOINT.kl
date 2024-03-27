@@ -1,0 +1,46 @@
+PROGRAM CONV2JOINT
+%NOLOCKGROUP
+%COMMENT = 'jPR cPR UF UT'
+
+VAR
+result : INTEGER
+status : INTEGER
+data_type : INTEGER
+int_value : INTEGER
+real_value : REAL
+str_value : STRING[10]
+dummyConfig : CONFIG
+dummyArray : ARRAY[1] OF REAL
+
+currentJPOS : JOINTPOS
+cartPos : POSITION
+UF_Ref : POSITION
+UT_Ref :POSITION
+jointResult : JOINTPOS
+resultPR : INTEGER
+cartPosPR : INTEGER
+UF_Number : INTEGER
+UT_Number : INTEGER
+
+BEGIN
+-- Retrieve TP Arguments
+GET_TPE_PRM(1, data_type, resultPR, real_value, str_value, result)
+GET_TPE_PRM(2, data_type, cartPosPR, real_value, str_value, result)
+GET_TPE_PRM(3, data_type, UF_Number, real_value, str_value, result)
+GET_TPE_PRM(4, data_type, UT_Number, real_value, str_value, result)
+
+-- Get Robot's current JPOS
+currentJPOS = CURJPOS(0,0)
+
+-- Get Cartesian Position to Convert
+cartPos = GET_POS_REG(cartPosPR,result)
+UF_Ref = $MNUFRAME[1, UF_Number]
+UT_Ref = $MNUTOOL[1, UT_Number]
+
+-- Call Built-In Conversion Function
+POS2JOINT(currentJPOS,cartPos,UF_Ref,UT_Ref,0,dummyConfig,dummyArray,jointResult,status)
+
+-- Return Result to TP Position Registers
+SET_JPOS_REG(resultPR, jointResult, result)
+
+END CONV2JOINT

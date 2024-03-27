@@ -1,0 +1,27 @@
+PROGRAM SINUS
+%NOLOCKGROUP
+%COMMENT = 'AR[1]: Reg ID'
+
+VAR
+	regID: INTEGER
+	tempFloat: REAL
+	tempString: STRING[50]
+	status: INTEGER
+	
+	bRFlag                : BOOLEAN -- GET_REG flag
+  	rVal                    : REAL -- GET_REG result
+ 	iVal                    : INTEGER -- GET_REG result
+ 	
+ 	result: REAL
+
+BEGIN
+	GET_TPE_PRM(1, 1, regID, tempFloat, tempString, status)
+	rVal = 0
+	iVal = 0
+	GET_REG(regID, bRFlag, iVal, rVal, status)
+	rVal = rVal + iVal
+
+	result = SIN(rVal)
+
+	SET_REAL_REG(regID,result,status)
+END SINUS

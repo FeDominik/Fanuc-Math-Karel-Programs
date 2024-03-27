@@ -1,0 +1,27 @@
+PROGRAM ARCTAN2
+%NOLOCKGROUP
+%COMMENT = 'IN1 IN2 RegID'
+
+VAR
+	regID: INTEGER
+	tempFloat: REAL
+	tempString: STRING[50]
+	status: INTEGER
+	real1: REAL
+	real2: REAL
+	int1: INTEGER
+	int2: INTEGER
+
+ 	result: REAL
+
+BEGIN
+	GET_TPE_PRM(1, 2, int1, real1, tempString, status)
+	GET_TPE_PRM(2, 2, int2, real2, tempString, status)
+	GET_TPE_PRM(3, 1, regID, tempFloat, tempString, status)
+	real1 = real1 + int1
+	real2 = real2 + int2
+
+	result = ATAN2(real1,real2)
+	
+	SET_REAL_REG(regID,result,status)
+END ARCTAN2
