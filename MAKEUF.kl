@@ -1,0 +1,40 @@
+PROGRAM MAKEUF
+
+VAR
+origPR    :    INTEGER
+xPR        :    INTEGER
+YPR        :    INTEGER
+origLoc    :    XYZWPREXT
+xLoc    :    XYZWPREXT
+yLoc    :    XYZWPREXT
+frameNum:    INTEGER
+prmType    :    INTEGER
+realVal    :    REAL
+strVal    :    STRING[1]
+STATUS    :    INTEGER
+
+
+BEGIN
+GET_TPE_PRM(1,prmType,origPR,realVal,strVal,STATUS)
+IF (STATUS <> 0) OR (prmType <> 1) then
+WRITE TPERROR('Problem getting origin', cr)
+ENDIF
+GET_TPE_PRM(2,prmType,xPR,realVal,strVal,STATUS)
+IF (STATUS <> 0) OR (prmType <> 1) then
+WRITE TPERROR('Problem getting X position', cr)
+ENDIF
+GET_TPE_PRM(3,prmType,yPR,realVal,strVal,STATUS)
+IF (STATUS <> 0) OR (prmType <> 1) then
+WRITE TPERROR('Problem getting  Y value PR', cr)
+ENDIF
+GET_TPE_PRM(4,prmType,frameNum,realVal,strVal,STATUS)
+IF (STATUS <> 0) OR (prmType <> 1) then
+WRITE TPERROR('Invalid uframe', cr)
+ENDIF
+origLoc = GET_POS_REG(origPR,STATUS)
+xLoc    = GET_POS_REG(xPR,STATUS)
+yLoc    = GET_POS_REG(yPR,STATUS)
+
+
+$MNUFRAME[1,frameNum] = FRAME(origLoc,xLoc,yLoc)
+END MAKEUF
